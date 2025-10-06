@@ -3051,12 +3051,17 @@ function diffConfig(oldConfig, newConfig) {
                     return true;
                 }
                 for(var i = 0; i < oldVal.length; i++) {
-                    if(oldVal[i] !== newVal[i]) {
-                        if(Lib.isPlainObject(oldVal[i]) && Lib.isPlainObject(newVal[i])) {
+                    if(oldVal[i] !== newVal[i]) {                            
+                        if(Lib.isPlainObject(oldVal[i]) && Lib.isPlainObject(newVal[i])) {                            
                             if(diffConfig(oldVal[i], newVal[i])) {
                                 return true;
-                            }
-                        } else {
+                            }                        
+                        } else if(Array.isArray(oldVal[i]) && Array.isArray(newVal[i])){
+                            // handle nested arrays, e.g., used for modeBarButtons
+                            if(diffConfig(oldVal[i], newVal[i])) {
+                                return true;
+                            }                        
+                        else {
                             return true;
                         }
                     }
